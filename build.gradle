@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'org.gradle.test-retry' version "1.1.5"
+    id 'io.qameta.allure' version '2.9.6'
+}
+
+//Versions
+def selenideVersion = '6.2.0'
+def allureVersion = '2.14.0'
+def seleniumVersion = '3.141.59'
+def lombokVersion = '1.18.22'
+def restAssuredVersion = '4.4.0'
+def hamcrestVersion = '2.0.0.0'
+def jupiterVersion = '5.6.0'
+def junitPlatformVersion = '1.8.2'
+
+//Threads
+def threadCount = 1
+
+allure {
+    version = "${allureVersion}"  // Latest Allure Version
+    useJUnit5 {
+        version = "${allureVersion}" // Latest Allure Version
+    }
+}
+
+group 'demo-web'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    //JUnit5
+    implementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
+    implementation "org.junit.platform:junit-platform-commons:${junitPlatformVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+
+    //Selenium
+    implementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    //Selenide
+    implementation "com.codeborne:selenide:${selenideVersion}"
+
+    //Allure
+    implementation "io.qameta.allure:allure-junit5:${allureVersion}"
+
+    //Lang3
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    //Lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    //Aspectj
+    implementation 'org.aspectj:aspectjweaver:1.9.7'
+
+    //RestAssured
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+
+    //Hamcrest
+    testImplementation "org.hamcrest:java-hamcrest:${hamcrestVersion}"
+
+}
+
+test {
+
+    if(System.properties.containsKey("threadCount")) {
+        threadCount = System.getProperty("threadCount") as Integer
+    }
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled'                 : 'true',
+            'junit.jupiter.execution.parallel.mode.default'            : 'concurrent',
+            'junit.jupiter.execution.parallel.mode.classes.default'    : 'concurrent',
+            'junit.jupiter.execution.parallel.config.strategy'         : 'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism': "$threadCount"
+//            'junit.jupiter.execution.parallel.config.class'            : 'com.demo.helpers.JunitParallelRunnerStrategy',
+    ]
+
+    if (System.getProperty("testArea") == 'smoke') {
+        filter {
+            includeTestsMatching "com.demo.tests.smoke.*"
+        }
+    }
+    if (System.getProperty("testArea") == 'auth') {
+        filter {
+            includeTestsMatching "com.demo.tests.smoke.AuthTests"
+        }
+    }
+    useJUnitPlatform()
+}
