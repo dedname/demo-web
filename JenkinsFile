@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    tools {
+        gradle 'gradle-6.8.3'
+    }
+
+    environment {
+        gradleTool = tool 'gradle-6.8.3'
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                sh "${gradleTool}/bin/gradle clean test -DthreadCount=${threadCount} -DtestArea=${testArea}"
+            }
+
+            post {
+                always {
+                    allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'build/allure-results']]
+                    ])
+                }
+            }
+        }
+    }
+}
