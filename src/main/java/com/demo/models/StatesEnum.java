@@ -2,6 +2,7 @@ package com.demo.models;
 
 import java.util.Random;
 
+//Enum for state
 public enum StatesEnum {
 
     NULL("", "-"),

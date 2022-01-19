@@ -13,8 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static com.codeborne.selenide.Selenide.open;
 
+//Base test class which sets driver params and has setUp and tearDown methods. Test which doesn't need auth in precondition extend this class
 public class BaseTest {
 
+    //Driver params are set with this method. It runs one time before all tests
     @BeforeAll
     public static void setUp() {
 
@@ -29,16 +31,19 @@ public class BaseTest {
         System.setProperty("chromeoptions.args",
                 "--disable-gpu, --no-sandbox, --disable-notifications,--ignore-certificate-errors, --allow-running-insecure-content");
 
+        //Set listener which handle Selenide actions and prettify they for allure report
         SelenideLogger.addListener("allure", new SelenideListener());
 
     }
 
+    //Method opens start page before each test. Also it need for BaseTestWithApiAuth class
     @BeforeEach
     @Step("Open start page")
     public void openStartPage() {
         open("/");
     }
 
+    //Close driver after each test
     @AfterEach
     public void tearDown() {
         Selenide.closeWebDriver();

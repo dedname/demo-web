@@ -3,7 +3,9 @@ package com.demo.models;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+//This annotation from lombok create getters and setters for class
 @Data
+//This annotation makes getters and setters return 'this' for chain use
 @Accessors(chain = true)
 public class User {
 

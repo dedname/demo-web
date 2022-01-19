@@ -18,9 +18,9 @@ def junitPlatformVersion = '1.8.2'
 def threadCount = 1
 
 allure {
-    version = "${allureVersion}"  // Latest Allure Version
+    version = "${allureVersion}"
     useJUnit5 {
-        version = "${allureVersion}" // Latest Allure Version
+        version = "${allureVersion}"
     }
 }
 
@@ -36,6 +36,7 @@ dependencies {
     //JUnit5
     implementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
     implementation "org.junit.platform:junit-platform-commons:${junitPlatformVersion}"
+    implementation "org.junit.jupiter:junit-jupiter:${jupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 

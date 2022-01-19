@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+//Class for pretty Selenide actions in allure report
 public class SelenideListener implements LogEventListener {
 
     private final List<EventFormatter> formatters = getDefaultFormatters();

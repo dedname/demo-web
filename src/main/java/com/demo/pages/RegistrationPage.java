@@ -16,7 +16,6 @@ public class RegistrationPage {
 
     //region CONSTANTS
     public static String TEXT_CREATE_AN_ACCOUNT = "Create an account";
-
     //endregion
 
 
@@ -50,6 +49,7 @@ public class RegistrationPage {
     public SelenideElement addressAliasInput = $(By.id("alias"));
     public SelenideElement registerButton = $(By.id("submitAccount"));
 
+    //This is list of required text fields. Selector elements aren't here
     public List<SelenideElement> requiredRegistrationFields= List.of(
             firstNamePersonalInput,
             lastNamePersonalInput,
@@ -115,6 +115,7 @@ public class RegistrationPage {
         addressAliasInput.setValue(user.getAlias());
     }
 
+    //Method for checking registration if one of required field isn't set
     public void checkRegistrationWithoutRequiredFields(User user) {
 
         selectState(StatesEnum.NULL);
@@ -122,6 +123,7 @@ public class RegistrationPage {
         createAnAccountHeader.shouldHave(Condition.text(TEXT_CREATE_AN_ACCOUNT));
         selectState(user.getState());
 
+        //All required text fields has same actions for check
         requiredRegistrationFields.forEach(e ->
                 {
                     if (passwordInput.getValue().equals("")) {
@@ -143,12 +145,7 @@ public class RegistrationPage {
         selectCountry("");
         registerButton.click();
         createAnAccountHeader.shouldHave(Condition.text(TEXT_CREATE_AN_ACCOUNT));
-
-
-
-
     }
     //endregion
-
 
 }
